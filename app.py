@@ -25,16 +25,17 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
-# Custom CSS for AI-themed modern design
+# Custom CSS for vibrant, attractive design
 st.markdown("""
 <style>
     /* Import modern fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap');
     
-    /* Global app styling with dark AI theme */
+    /* Global app styling with vibrant gradient background */
     .stApp {
-        background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #2d1b69 100%);
-        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 25%, #1e1e1e 50%, #262626 75%, #1a1a1a 100%);
+        font-family: 'Poppins', sans-serif;
+        color: #ffffff;
     }
     
     /* Main content area */
@@ -45,133 +46,204 @@ st.markdown("""
         background: transparent;
     }
     
-    /* Header styling - AI inspired */
+    /* Stunning header with liquid glass effect */
     .main-header {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
-        padding: 2rem;
-        border-radius: 20px;
-        color: white;
+        background: linear-gradient(135deg, #ff8a00 0%, #ffb347 25%, #ff6b35 50%, #ff8500 75%, #ffa500 100%);
+        padding: 2.5rem;
+        border-radius: 25px;
+        color: #1a1a1a;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
+        box-shadow: 
+            0 8px 32px rgba(255, 138, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(15px);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .main-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+        animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
     }
     
     .main-header h1 {
         margin: 0;
-        font-size: 3rem;
-        font-weight: 700;
-        background: linear-gradient(45deg, #ffffff, #e0e7ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #1a1a1a;
+        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+        font-family: 'Outfit', sans-serif;
+        position: relative;
+        z-index: 2;
     }
     
     .main-header p {
         margin: 1rem 0 0 0;
-        font-size: 1.3rem;
-        opacity: 0.9;
-        font-weight: 400;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #2d2d2d;
+        position: relative;
+        z-index: 2;
     }
     
-    /* Removed metric-card styling - using simple metrics instead */
+    /* Removed glass container styling - using clean design without rectangular spacers */
     
-    /* Removed client-card styling - using simple dividers instead */
-    
-    /* Text colors for better visibility */
-    .stApp, .stApp p, .stApp span, .stApp div {
-        color: #e2e8f0 !important;
+    /* Text colors for perfect visibility */
+    .stApp, .stApp p, .stApp span, .stApp div, .stMarkdown {
+        color: #ffffff !important;
     }
     
     h1, h2, h3, h4, h5, h6 {
-        color: #f1f5f9 !important;
+        color: #ffffff !important;
         font-weight: 600;
+        font-family: 'Outfit', sans-serif;
     }
     
-    /* Status indicators - AI themed */
+    /* Metric styling with high contrast */
+    [data-testid="metric-container"] {
+        background: linear-gradient(135deg, 
+            rgba(255, 138, 0, 0.1) 0%, 
+            rgba(255, 193, 7, 0.05) 100%);
+        border: 1px solid rgba(255, 138, 0, 0.3);
+        border-radius: 15px;
+        padding: 1rem;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(255, 138, 0, 0.2);
+    }
+    
+    [data-testid="metric-container"] > div {
+        color: #ffffff !important;
+    }
+    
+    [data-testid="metric-container"] [data-testid="metric-value"] {
+        color: #ffc107 !important;
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+    
+    [data-testid="metric-container"] [data-testid="metric-label"] {
+        color: #e0e0e0 !important;
+        font-weight: 500;
+    }
+    
+    /* Status indicators with liquid glass effect */
     .status-active { 
         background: linear-gradient(135deg, #10b981, #059669);
         color: white;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
+        padding: 0.5rem 1.2rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
         font-weight: 600;
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        box-shadow: 
+            0 4px 15px rgba(16, 185, 129, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
     }
     
     .status-pending { 
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-        color: white;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
+        background: linear-gradient(135deg, #ff8a00, #ffa500);
+        color: #1a1a1a;
+        padding: 0.5rem 1.2rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
         font-weight: 600;
-        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        box-shadow: 
+            0 4px 15px rgba(255, 138, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
     }
     
     .status-inactive { 
-        background: linear-gradient(135deg, #ef4444, #dc2626);
+        background: linear-gradient(135deg, #6b7280, #4b5563);
         color: white;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
+        padding: 0.5rem 1.2rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
         font-weight: 600;
-        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+        box-shadow: 
+            0 4px 15px rgba(107, 114, 128, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
     }
     
     .status-trial { 
-        background: linear-gradient(135deg, #06b6d4, #0891b2);
-        color: white;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
+        background: linear-gradient(135deg, #ffc107, #ffb300);
+        color: #1a1a1a;
+        padding: 0.5rem 1.2rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
         font-weight: 600;
-        box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+        box-shadow: 
+            0 4px 15px rgba(255, 193, 7, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
     }
     
     /* Integration status */
     .integration-yes {
-        color: #10b981 !important;
+        color: #ffc107 !important;
         font-weight: 600;
     }
     
     .integration-no {
-        color: #94a3b8 !important;
+        color: #9ca3af !important;
         font-style: italic;
     }
     
-    /* Success and error messages */
+    /* Success and error messages with glass effect */
     .success-message {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1));
+        border: 1px solid rgba(16, 185, 129, 0.4);
         color: #10b981 !important;
-        padding: 1rem;
-        border-radius: 12px;
+        padding: 1.5rem;
+        border-radius: 15px;
         margin: 1rem 0;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
+        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
     }
     
     .error-message {
-        background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
-        border: 1px solid rgba(239, 68, 68, 0.3);
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+        border: 1px solid rgba(239, 68, 68, 0.4);
         color: #ef4444 !important;
-        padding: 1rem;
-        border-radius: 12px;
+        padding: 1.5rem;
+        border-radius: 15px;
         margin: 1rem 0;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
+        box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
     }
     
-    /* Removed sidebar-section styling - using simple dividers instead */
-    
-    /* Form styling */
+    /* Form styling with liquid glass */
     .stForm {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.8));
-        backdrop-filter: blur(10px);
-        padding: 2rem;
-        border-radius: 16px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(148, 163, 184, 0.2);
+        background: linear-gradient(135deg, 
+            rgba(255, 138, 0, 0.1) 0%, 
+            rgba(128, 128, 128, 0.05) 50%,
+            rgba(255, 193, 7, 0.1) 100%);
+        backdrop-filter: blur(20px);
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 
+            0 8px 32px rgba(255, 138, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         margin-bottom: 2rem;
     }
     
@@ -194,21 +266,36 @@ st.markdown("""
         box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
     }
     
-    /* Button styling */
+    /* Button styling with header gradient */
     .stButton > button {
-        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
-        color: white !important;
+        background: linear-gradient(135deg, #ff8a00 0%, #ffb347 25%, #ff6b35 50%, #ff8500 75%, #ffa500 100%) !important;
+        color: #1a1a1a !important;
         border: none !important;
-        border-radius: 10px !important;
-        padding: 0.5rem 1.5rem !important;
-        font-weight: 600 !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3) !important;
+        border-radius: 15px !important;
+        padding: 0.7rem 2rem !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 
+            0 4px 15px rgba(255, 138, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3) !important;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4) !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 
+            0 8px 25px rgba(255, 138, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+        background: linear-gradient(135deg, #ffb347 0%, #ffa500 25%, #ff8a00 50%, #ff6b35 75%, #ff8500 100%) !important;
+    }
+    
+    .stButton > button:active {
+        transform: translateY(-1px) !important;
+        box-shadow: 
+            0 4px 15px rgba(255, 138, 0, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
     }
     
     /* Expander styling */
