@@ -713,25 +713,28 @@ def render_add_client_form():
             crm_type = st.selectbox("CRM Type", ["", "squareup"], 
                                   help="Currently supporting SquareUp only. Leave empty if not using CRM.")
             
-            # Show CRM API Key field only if SquareUp is selected
+            # Show CRM API Key and Location ID only if SquareUp is selected
             crm_api_key = ""
+            locations = ""
             if crm_type == "squareup":
-                crm_api_key = st.text_input("SquareUp API Key*", type="password", 
+                crm_api_key = st.text_input("SquareUp CRM API Key*", type="password", 
                                           help="Required when using SquareUp CRM")
+                locations = st.text_input("Location ID*", 
+                                        help="SquareUp Location ID for this business")
             
             st.write("**Calendar Integration**")
             
             # Calendar logic based on CRM selection
             if crm_type == "squareup":
-                # If SquareUp CRM is selected, calendar must also be SquareUp
+                # If SquareUp CRM is selected, calendar is automatically SquareUp (no API key needed)
                 calendar_type = "squareup"
                 st.info("📅 Calendar automatically set to SquareUp when using SquareUp CRM")
-                calendar_api_key = st.text_input("SquareUp Calendar API Key*", type="password",
-                                                help="Required for SquareUp calendar integration")
+                st.info("ℹ️ No separate Calendar API Key needed - uses CRM credentials")
+                calendar_api_key = ""
             else:
-                # If no CRM or different CRM, can select Google Calendar
+                # If no CRM, can select Google Calendar
                 calendar_type = st.selectbox("Calendar Type", ["", "google"], 
-                                           help="Select Google Calendar if not using SquareUp CRM")
+                                           help="Select Google Calendar if not using CRM")
                 calendar_api_key = ""
                 if calendar_type == "google":
                     calendar_api_key = st.text_input("Google Calendar API Key*", type="password",
@@ -796,12 +799,13 @@ def render_add_client_form():
             # Validate integration-specific required fields
             validation_errors = []
             
-            if crm_type == "squareup" and not crm_api_key:
-                validation_errors.append("SquareUp API Key is required when using SquareUp CRM")
+            if crm_type == "squareup":
+                if not crm_api_key:
+                    validation_errors.append("SquareUp CRM API Key is required when using SquareUp CRM")
+                if not locations:
+                    validation_errors.append("Location ID is required when using SquareUp CRM")
             
-            if calendar_type == "squareup" and not calendar_api_key:
-                validation_errors.append("SquareUp Calendar API Key is required when using SquareUp Calendar")
-            elif calendar_type == "google" and not calendar_api_key:
+            if calendar_type == "google" and not calendar_api_key:
                 validation_errors.append("Google Calendar API Key is required when using Google Calendar")
             
             if validation_errors:
@@ -825,6 +829,7 @@ def render_add_client_form():
                 "crm_api_key": crm_api_key or None,
                 "calendar_type": calendar_type or None,
                 "calendar_id": calendar_api_key or None,  # Store API key in calendar_id field
+                "locations": locations or None,
                 "twilio_number": twilio_number or None,
                 "front_desk_number": front_desk_number or None,
                 "front_desk_email": front_desk_email or None,
@@ -1036,14 +1041,17 @@ def render_client_management():
                         new_crm_type = st.selectbox("CRM Type", crm_options, index=crm_index)
                         
                         new_crm_api_key = ""
+                        new_locations = ""
                         if new_crm_type == "squareup":
-                            new_crm_api_key = st.text_input("SquareUp API Key", type="password", value=client.get('crm_api_key', '') or '')
+                            new_crm_api_key = st.text_input("SquareUp CRM API Key", type="password", value=client.get('crm_api_key', '') or '')
+                            new_locations = st.text_input("Location ID", value=client.get('locations', '') or '')
                         
                         # Calendar Integration
                         if new_crm_type == "squareup":
                             new_calendar_type = "squareup"
-                            st.info("📅 Calendar automatically set to SquareUp")
-                            new_calendar_api_key = st.text_input("SquareUp Calendar API Key", type="password", value=client.get('calendar_id', '') or '')
+                            st.info("📅 Calendar automatically set to SquareUp when using SquareUp CRM")
+                            st.info("ℹ️ No separate Calendar API Key needed - uses CRM credentials")
+                            new_calendar_api_key = ""
                         else:
                             current_calendar = client.get('calendar_type', '')
                             calendar_options = ["", "google"]
@@ -1097,12 +1105,13 @@ def render_client_management():
                                 # Validate integration-specific required fields
                                 validation_errors = []
                                 
-                                if new_crm_type == "squareup" and not new_crm_api_key:
-                                    validation_errors.append("SquareUp API Key is required when using SquareUp CRM")
+                                if new_crm_type == "squareup":
+                                    if not new_crm_api_key:
+                                        validation_errors.append("SquareUp CRM API Key is required when using SquareUp CRM")
+                                    if not new_locations:
+                                        validation_errors.append("Location ID is required when using SquareUp CRM")
                                 
-                                if new_calendar_type == "squareup" and not new_calendar_api_key:
-                                    validation_errors.append("SquareUp Calendar API Key is required when using SquareUp Calendar")
-                                elif new_calendar_type == "google" and not new_calendar_api_key:
+                                if new_calendar_type == "google" and not new_calendar_api_key:
                                     validation_errors.append("Google Calendar API Key is required when using Google Calendar")
                                 
                                 if validation_errors:
@@ -1124,6 +1133,7 @@ def render_client_management():
                                         "crm_api_key": new_crm_api_key or None,
                                         "calendar_type": new_calendar_type or None,
                                         "calendar_id": new_calendar_api_key or None,
+                                        "locations": new_locations or None,
                                         "twilio_number": new_twilio_number or None,
                                         "front_desk_number": new_front_desk_number or None,
                                         "front_desk_email": new_front_desk_email or None,
