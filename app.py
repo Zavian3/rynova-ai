@@ -75,23 +75,7 @@ st.markdown("""
         font-weight: 400;
     }
     
-    /* Metric cards - AI themed */
-    .metric-card {
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        backdrop-filter: blur(10px);
-        padding: 1.5rem;
-        border-radius: 16px;
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.1);
-        transition: all 0.3s ease;
-    }
-    
-    .metric-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
-        border-color: rgba(99, 102, 241, 0.4);
-    }
+    /* Removed metric-card styling - using simple metrics instead */
     
     /* Removed client-card styling - using simple dividers instead */
     
@@ -178,16 +162,7 @@ st.markdown("""
         backdrop-filter: blur(10px);
     }
     
-    /* Sidebar styling */
-    .sidebar-section {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.6));
-        backdrop-filter: blur(10px);
-        padding: 1.5rem;
-        border-radius: 16px;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
+    /* Removed sidebar-section styling - using simple dividers instead */
     
     /* Form styling */
     .stForm {
@@ -370,19 +345,18 @@ def render_header():
 
 def render_sidebar():
     """Render the sidebar navigation"""
-    st.sidebar.markdown('<div class="sidebar-section">', unsafe_allow_html=True)
     st.sidebar.title("🚀 Navigation")
     
     page = st.sidebar.selectbox(
         "Choose a page:",
         ["📊 Dashboard Overview", "➕ Add New Client", "👥 Client Management", "📈 Analytics"]
     )
-    st.sidebar.markdown('</div>', unsafe_allow_html=True)
+    
+    st.sidebar.write("---")
     
     # Quick stats in sidebar
     clients = supabase.get_all_clients()
     
-    st.sidebar.markdown('<div class="sidebar-section">', unsafe_allow_html=True)
     st.sidebar.markdown("### 📊 Quick Stats")
     
     col1, col2 = st.sidebar.columns(2)
@@ -405,8 +379,6 @@ def render_sidebar():
             most_common = max(set(business_types), key=business_types.count)
             st.write(f"**Top Type:** {most_common}")
     
-    st.sidebar.markdown('</div>', unsafe_allow_html=True)
-    
     return page
 
 def render_dashboard_overview():
@@ -424,27 +396,19 @@ def render_dashboard_overview():
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.markdown('<div class="metric-card">', unsafe_allow_html=True)
         st.metric("Total Clients", len(clients))
-        st.markdown('</div>', unsafe_allow_html=True)
     
     with col2:
         active_clients = len([c for c in clients if c.get('status') == 'active'])
-        st.markdown('<div class="metric-card">', unsafe_allow_html=True)
         st.metric("Active Clients", active_clients)
-        st.markdown('</div>', unsafe_allow_html=True)
     
     with col3:
         business_types = len(set([c.get('business_type') for c in clients if c.get('business_type')]))
-        st.markdown('<div class="metric-card">', unsafe_allow_html=True)
         st.metric("Business Types", business_types)
-        st.markdown('</div>', unsafe_allow_html=True)
     
     with col4:
         integrations = len([c for c in clients if c.get('calendar_type') or c.get('crm_type')])
-        st.markdown('<div class="metric-card">', unsafe_allow_html=True)
         st.metric("Integrations Setup", integrations)
-        st.markdown('</div>', unsafe_allow_html=True)
     
     # Charts
     col1, col2 = st.columns(2)
