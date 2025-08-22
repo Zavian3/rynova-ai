@@ -93,24 +93,7 @@ st.markdown("""
         border-color: rgba(99, 102, 241, 0.4);
     }
     
-    /* Client cards */
-    .client-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(51, 65, 85, 0.8) 100%);
-        backdrop-filter: blur(10px);
-        padding: 1.5rem;
-        border-radius: 16px;
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        color: #e2e8f0;
-    }
-    
-    .client-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
-        border-color: rgba(99, 102, 241, 0.4);
-    }
+    /* Removed client-card styling - using simple dividers instead */
     
     /* Text colors for better visibility */
     .stApp, .stApp p, .stApp span, .stApp div {
@@ -564,7 +547,6 @@ def render_dashboard_overview():
     recent_clients = clients[:5]  # Show first 5 clients
     
     for client in recent_clients:
-        st.markdown('<div class="client-card">', unsafe_allow_html=True)
         col1, col2, col3 = st.columns([3, 3, 2])
         
         with col1:
@@ -590,7 +572,7 @@ def render_dashboard_overview():
             else:
                 st.markdown('<span class="status-inactive">🔴 Inactive</span>', unsafe_allow_html=True)
         
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.write("---")
 
 def render_add_client_form():
     """Render the add new client form"""
