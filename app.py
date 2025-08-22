@@ -330,22 +330,60 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* Sidebar styling */
-    .stSidebar {
+    /* Sidebar styling with multiple selectors for compatibility */
+    .stSidebar, .css-1d391kg, section[data-testid="stSidebar"] {
         background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+        min-width: 300px !important;
+        max-width: 400px !important;
     }
     
-    .stSidebar > div {
+    .stSidebar > div, .css-1d391kg > div, section[data-testid="stSidebar"] > div {
         background: transparent !important;
+        padding-top: 2rem !important;
     }
     
-    /* Sidebar text visibility */
-    .stSidebar .stMarkdown, .stSidebar h1, .stSidebar h2, .stSidebar h3 {
+    /* Sidebar content styling */
+    .stSidebar .stMarkdown, .stSidebar h1, .stSidebar h2, .stSidebar h3,
+    .css-1d391kg .stMarkdown, .css-1d391kg h1, .css-1d391kg h2, .css-1d391kg h3,
+    section[data-testid="stSidebar"] .stMarkdown, section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
         color: #ffffff !important;
     }
     
-    .stSidebar .stSelectbox label {
+    /* Sidebar selectbox styling */
+    .stSidebar .stSelectbox label, .css-1d391kg .stSelectbox label,
+    section[data-testid="stSidebar"] .stSelectbox label {
         color: #ffffff !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Sidebar selectbox dropdown */
+    .stSidebar .stSelectbox > div, .css-1d391kg .stSelectbox > div,
+    section[data-testid="stSidebar"] .stSelectbox > div {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Force sidebar to be visible */
+    .stSidebar, .css-1d391kg, section[data-testid="stSidebar"] {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: translateX(0px) !important;
+    }
+    
+    /* Sidebar toggle button styling */
+    button[kind="header"] {
+        background-color: rgba(255, 138, 0, 0.1) !important;
+        border: 1px solid rgba(255, 138, 0, 0.3) !important;
+        color: #ff8a00 !important;
+    }
+    
+    /* Ensure main content adjusts for sidebar */
+    .main .block-container {
+        margin-left: 0px !important;
+        padding-left: 1rem !important;
     }
     
     /* Labels and text */
