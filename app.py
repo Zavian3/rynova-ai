@@ -10,7 +10,6 @@ from typing import Dict, List, Optional
 # Configure Streamlit page
 st.set_page_config(
     page_title="Rynova AI - Client Dashboard",
-    page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
 )
