@@ -425,7 +425,7 @@ def render_header():
     """Render the main dashboard header"""
     st.markdown("""
     <div class="main-header">
-        <h1>🤖 Rynova AI Client Dashboard</h1>
+        <h1>Rynova AI Client Dashboard</h1>
         <p>Manage AI Agent Appointments & Client Onboarding</p>
     </div>
     """, unsafe_allow_html=True)
