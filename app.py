@@ -331,8 +331,21 @@ st.markdown("""
     header {visibility: hidden;}
     
     /* Sidebar styling */
-    .css-1d391kg {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    .stSidebar {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+    }
+    
+    .stSidebar > div {
+        background: transparent !important;
+    }
+    
+    /* Sidebar text visibility */
+    .stSidebar .stMarkdown, .stSidebar h1, .stSidebar h2, .stSidebar h3 {
+        color: #ffffff !important;
+    }
+    
+    .stSidebar .stSelectbox label {
+        color: #ffffff !important;
     }
     
     /* Labels and text */
@@ -459,6 +472,7 @@ def render_sidebar():
         integration_rate = (setup_integrations / len(clients) * 100) if clients else 0
         
         st.metric("Setup Rate", f"{integration_rate:.0f}%")
+        st.caption("💡 % of clients with Calendar OR CRM setup")
         
         # Most common business type
         business_types = [c.get('business_type') for c in clients if c.get('business_type')]
@@ -536,6 +550,7 @@ def render_dashboard_overview():
     
     with col2:
         st.subheader("🔗 Integration Status")
+        st.caption("📊 Shows how many clients have Both, Calendar Only, CRM Only, or None")
         integration_data = []
         for client in clients:
             has_calendar = bool(client.get('calendar_type'))
