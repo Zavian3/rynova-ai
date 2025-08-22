@@ -713,14 +713,19 @@ def render_add_client_form():
             crm_type = st.selectbox("CRM Type", ["", "squareup"], 
                                   help="Currently supporting SquareUp only. Leave empty if not using CRM.")
             
-            # Show CRM API Key and Location ID only if SquareUp is selected
-            crm_api_key = ""
-            locations = ""
+            # Always show CRM fields but disable when not using SquareUp
             if crm_type == "squareup":
                 crm_api_key = st.text_input("SquareUp CRM API Key*", type="password", 
                                           help="Required when using SquareUp CRM")
                 locations = st.text_input("Location ID*", 
                                         help="SquareUp Location ID for this business")
+            else:
+                crm_api_key = st.text_input("SquareUp CRM API Key", type="password", 
+                                          help="Only required when using SquareUp CRM", 
+                                          disabled=True, placeholder="Select SquareUp CRM first")
+                locations = st.text_input("Location ID", 
+                                        help="Only required when using SquareUp CRM",
+                                        disabled=True, placeholder="Select SquareUp CRM first")
             
             st.write("**Calendar Integration**")
             
@@ -730,15 +735,20 @@ def render_add_client_form():
                 calendar_type = "squareup"
                 st.info("📅 Calendar automatically set to SquareUp when using SquareUp CRM")
                 st.info("ℹ️ No separate Calendar API Key needed - uses CRM credentials")
-                calendar_api_key = ""
+                calendar_api_key = st.text_input("Calendar API Key", 
+                                                help="Not needed for SquareUp - uses CRM credentials",
+                                                disabled=True, placeholder="Uses CRM credentials")
             else:
                 # If no CRM, can select Google Calendar
                 calendar_type = st.selectbox("Calendar Type", ["", "google"], 
                                            help="Select Google Calendar if not using CRM")
-                calendar_api_key = ""
                 if calendar_type == "google":
                     calendar_api_key = st.text_input("Google Calendar API Key*", type="password",
                                                    help="Required for Google Calendar integration")
+                else:
+                    calendar_api_key = st.text_input("Google Calendar API Key", type="password",
+                                                   help="Required when using Google Calendar",
+                                                   disabled=True, placeholder="Select Google Calendar first")
         
         with col2:
             st.write("**Communication Setup**")
@@ -1040,26 +1050,41 @@ def render_client_management():
                         crm_index = crm_options.index(current_crm) if current_crm in crm_options else 0
                         new_crm_type = st.selectbox("CRM Type", crm_options, index=crm_index)
                         
-                        new_crm_api_key = ""
-                        new_locations = ""
+                        # Always show CRM fields but disable when not using SquareUp
                         if new_crm_type == "squareup":
-                            new_crm_api_key = st.text_input("SquareUp CRM API Key", type="password", value=client.get('crm_api_key', '') or '')
-                            new_locations = st.text_input("Location ID", value=client.get('locations', '') or '')
+                            new_crm_api_key = st.text_input("SquareUp CRM API Key*", type="password", value=client.get('crm_api_key', '') or '')
+                            new_locations = st.text_input("Location ID*", value=client.get('locations', '') or '')
+                        else:
+                            new_crm_api_key = st.text_input("SquareUp CRM API Key", type="password", 
+                                                          value=client.get('crm_api_key', '') or '',
+                                                          help="Only required when using SquareUp CRM", 
+                                                          disabled=True, placeholder="Select SquareUp CRM first")
+                            new_locations = st.text_input("Location ID", 
+                                                        value=client.get('locations', '') or '',
+                                                        help="Only required when using SquareUp CRM",
+                                                        disabled=True, placeholder="Select SquareUp CRM first")
                         
                         # Calendar Integration
                         if new_crm_type == "squareup":
                             new_calendar_type = "squareup"
                             st.info("📅 Calendar automatically set to SquareUp when using SquareUp CRM")
                             st.info("ℹ️ No separate Calendar API Key needed - uses CRM credentials")
-                            new_calendar_api_key = ""
+                            new_calendar_api_key = st.text_input("Calendar API Key", 
+                                                                value=client.get('calendar_id', '') or '',
+                                                                help="Not needed for SquareUp - uses CRM credentials",
+                                                                disabled=True, placeholder="Uses CRM credentials")
                         else:
                             current_calendar = client.get('calendar_type', '')
                             calendar_options = ["", "google"]
                             calendar_index = calendar_options.index(current_calendar) if current_calendar in calendar_options else 0
                             new_calendar_type = st.selectbox("Calendar Type", calendar_options, index=calendar_index)
-                            new_calendar_api_key = ""
                             if new_calendar_type == "google":
-                                new_calendar_api_key = st.text_input("Google Calendar API Key", type="password", value=client.get('calendar_id', '') or '')
+                                new_calendar_api_key = st.text_input("Google Calendar API Key*", type="password", value=client.get('calendar_id', '') or '')
+                            else:
+                                new_calendar_api_key = st.text_input("Google Calendar API Key", type="password",
+                                                                   value=client.get('calendar_id', '') or '',
+                                                                   help="Required when using Google Calendar",
+                                                                   disabled=True, placeholder="Select Google Calendar first")
                     
                     with col2:
                         new_twilio_number = st.text_input("Twilio Number", value=client.get('twilio_number', '') or '')
